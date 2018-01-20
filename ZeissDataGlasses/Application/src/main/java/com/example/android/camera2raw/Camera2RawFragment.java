@@ -60,7 +60,9 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
@@ -610,6 +612,25 @@ public class Camera2RawFragment extends Fragment
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.picture).setOnClickListener(this);
         view.findViewById(R.id.info).setOnClickListener(this);
+        view.findViewById(R.id.texture).setOnClickListener(this);
+
+//        view.findViewById(R.id.picture).setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if(event.getAction() == MotionEvent.ACTION_UP){
+//
+//                    new AlertDialog.Builder(this)
+//                            .setMessage("Touch")
+//                            .setPositiveButton(android.R.string.ok, null)
+//                            .show();
+//
+//                    // Do what you want
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
 
         // Setup a new OrientationEventListener.  This is used to handle rotation events like a
@@ -677,6 +698,15 @@ public class Camera2RawFragment extends Fragment
                 takePicture();
                 break;
             }
+            case R.id.texture: {
+                Activity activity = getActivity();
+                new AlertDialog.Builder(activity)
+                        .setMessage("Taking a picture")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+
+                break;
+            }
             case R.id.info: {
                 Activity activity = getActivity();
                 if (null != activity) {
@@ -688,6 +718,8 @@ public class Camera2RawFragment extends Fragment
                 break;
             }
         }
+
+        Log.v("ZEISSSSSSS", view.toString());
     }
 
     /**
@@ -1145,6 +1177,32 @@ public class Camera2RawFragment extends Fragment
                     createCameraPreviewSessionLocked();
                 }
             }
+        }
+    }
+
+    private void takePictureBasic() {
+        lockFocus();
+    }
+
+    /**
+     * Camera state: Waiting for the focus to be locked.
+     */
+    private static final int STATE_WAITING_LOCK = 1;
+
+    /**
+     * Lock the focus as the first step for a still image capture.
+     */
+    private void lockFocus() {
+        try {
+            // This is how to tell the camera to lock focus.
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+                    CameraMetadata.CONTROL_AF_TRIGGER_START);
+            // Tell #mCaptureCallback to wait for the lock.
+            mState = STATE_WAITING_LOCK;
+            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
+                    mBackgroundHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
         }
     }
 
