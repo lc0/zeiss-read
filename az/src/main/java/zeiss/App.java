@@ -6,13 +6,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +36,107 @@ public class App {
     //
     // Also, if you want to use the celebrities model, change "landmarks" to "celebrities" here and in
     // uriBuilder.setParameter to use the Celebrities model.
-    public static final String uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
+    public static final String ocrURL = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
+    public static final String tokenURL = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
+    public static final String textToSpeechSubscriptionKey = "4ef4fd02de554dbb92fe94c28fe38c46";
+    public static final String speechURL = "https://speech.platform.bing.com/synthesize";
 
 
     public static void main(String[] args) {
+        String text = getImageToText("/home/raz/Desktop/toxic.png");
+        String token = getToken();
+
+        getSpeech(text, token);
+    }
+
+    private static void getSpeech(String text, String token) {
         HttpClient httpClient = new DefaultHttpClient();
 
         try {
             // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
             //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
             //   URL below with "westus".
-            URIBuilder uriBuilder = new URIBuilder(uriBase);
+            URIBuilder uriBuilder = new URIBuilder(speechURL);
+
+            // Request parameters.
+            URI uri = uriBuilder.build();
+            HttpPost request = new HttpPost(uri);
+
+            // Request headers.
+            request.setHeader("Content-Type", "application/ssml+xml");
+            request.setHeader("Authorization", "Bearer " + token);
+            request.setHeader("X-Microsoft-OutputFormat", "audio-16khz-32kbitrate-mono-mp3");
+            request.setHeader("User-Agent", "Readit");
+//            request.setHeader("X-Microsoft-OutputFormat", "audio-16khz-32kbitrate-mono-mp3");
+
+            // Request body.
+            StringEntity reqEntity = new StringEntity("<speak version='1.0' xml:lang='en-US'><voice xml:lang='en-US' xml:gender='Female' name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>" +
+                    text
+                    + "</voice></speak>");
+            request.setEntity(reqEntity);
+
+            // Execute the REST API call and get the response entity.
+            HttpResponse response = httpClient.execute(request);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                InputStream content = entity.getContent();
+                System.out.println("Speech data size: "+content.available());
+                File targetFile = new File("/home/raz/tmp/text.mp3");
+                OutputStream outStream = new FileOutputStream(targetFile);
+                entity.writeTo(outStream);
+                outStream.close();
+
+
+            }
+        } catch (Exception e) {
+            // Display error message.
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+
+    private static String getToken() {
+        HttpClient httpClient = new DefaultHttpClient();
+
+        try {
+            // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
+            //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
+            //   URL below with "westus".
+            URIBuilder uriBuilder = new URIBuilder(tokenURL);
+
+            // Request parameters.
+            URI uri = uriBuilder.build();
+            HttpPost request = new HttpPost(uri);
+
+            // Request headers.
+            request.setHeader("Ocp-Apim-Subscription-Key", textToSpeechSubscriptionKey);
+
+            // Execute the REST API call and get the response entity.
+            HttpResponse response = httpClient.execute(request);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                // Format and display the JSON response.
+                String token = EntityUtils.toString(entity);
+                System.out.println("Token: " + token);
+                return token;
+            }
+        } catch (Exception e) {
+            // Display error message.
+            System.out.println("Exception: " + e.getMessage());
+        }
+        return "";
+
+    }
+
+    private static String getImageToText(String image) {
+        HttpClient httpClient = new DefaultHttpClient();
+
+        try {
+            // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
+            //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
+            //   URL below with "westus".
+            URIBuilder uriBuilder = new URIBuilder(ocrURL);
 
             uriBuilder.setParameter("language", "unk");
             uriBuilder.setParameter("detectOrientation ", "true");
@@ -59,7 +149,7 @@ public class App {
             request.setHeader("Content-Type", "application/octet-stream");
             request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
 
-            File file = new File("/home/raz/Desktop/arrivals.jpg");
+            File file = new File(image);
             // Request body.
             InputStreamEntity reqEntity = new InputStreamEntity(new FileInputStream(file), -1);
             request.setEntity(reqEntity);
@@ -73,9 +163,10 @@ public class App {
                 String jsonString = EntityUtils.toString(entity);
                 JSONObject json = new JSONObject(jsonString);
                 System.out.println("REST Response:\n");
-                System.out.println(json.toString(2));
-                System.out.println(getText(json));
+                String text = getText(json);
+                System.out.println("Text found: " + text);
 
+                return text;
 
 
             }
@@ -83,6 +174,7 @@ public class App {
             // Display error message.
             System.out.println("Exception: " + e.getMessage());
         }
+        return "";
     }
 
     private static String getText(JSONObject json) {
