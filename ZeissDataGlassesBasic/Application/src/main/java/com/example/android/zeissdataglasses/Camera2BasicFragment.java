@@ -896,11 +896,11 @@ public class Camera2BasicFragment extends Fragment
                 break;
             }
             case R.id.texture: {
-                Activity activity = getActivity();
-                new AlertDialog.Builder(activity)
-                        .setMessage("Taking a picture")
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
+//                Activity activity = getActivity();
+//                new AlertDialog.Builder(activity)
+//                        .setMessage("Taking a picture")
+//                        .setPositiveButton(android.R.string.ok, null)
+//                        .show();
                 takePicture();
 
                 break;
