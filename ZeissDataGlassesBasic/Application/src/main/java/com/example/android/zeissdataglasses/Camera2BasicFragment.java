@@ -42,6 +42,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -829,6 +830,8 @@ public class Camera2BasicFragment extends Fragment
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             setAutoFlash(captureBuilder);
 
+            final Camera2BasicFragment wtf = this;
+
             // Orientation
             int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
@@ -843,6 +846,8 @@ public class Camera2BasicFragment extends Fragment
                     showToast("Saved: " + mFile);
                     Log.d(TAG, mFile.toString());
                     unlockFocus();
+
+                    new Ocr(wtf, mFile.toString()).execute();
                 }
             };
 
@@ -852,6 +857,14 @@ public class Camera2BasicFragment extends Fragment
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void playSound(String mp3Filename) {
+        Log.e("ZEISSS", "filename is -" + mp3Filename);
+        Log.e("ZEISSS", "eeeeeeeeeee");
+        MediaPlayer mPlayer = MediaPlayer.create(getContext(), Uri.parse(mp3Filename));
+        mPlayer.start();
     }
 
     /**
@@ -906,8 +919,8 @@ public class Camera2BasicFragment extends Fragment
 //                        .show();
                 takePicture();
 
-                MediaPlayer mPlayer = MediaPlayer.create(getContext(), R.raw.actionable);
-                mPlayer.start();
+//                MediaPlayer mPlayer = MediaPlayer.create(getContext(), R.raw.actionable);
+//                mPlayer.start();
 
                 break;
             }

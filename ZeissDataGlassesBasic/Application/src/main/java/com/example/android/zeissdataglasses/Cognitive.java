@@ -4,7 +4,9 @@ package com.example.android.zeissdataglasses;
  * Created by khomenkos on 1/20/18.
  */
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,7 +54,7 @@ public class Cognitive {
     public static final String speechURL = "https://speech.platform.bing.com/synthesize";
 
 
-    private static void getSpeech(String text, String token) {
+    public static String getSpeech(String text, String token, Context context) {
         HttpClient httpClient = new DefaultHttpClient();
 
         try {
@@ -82,22 +84,30 @@ public class Cognitive {
             HttpEntity entity = response.getEntity();
 
             if (entity != null) {
-                InputStream content = entity.getContent();
-                System.out.println("Speech data size: "+content.available());
-                File targetFile = new File("/home/raz/tmp/text.mp3");
+
+                File outputDir = context.getCacheDir(); // context being the Activity pointer
+                File targetFile = File.createTempFile("prefix", "extension", outputDir);
+
+                Log.i("ZEISSSS", "temp file: " + targetFile.toString());
+
                 OutputStream outStream = new FileOutputStream(targetFile);
                 entity.writeTo(outStream);
                 outStream.close();
+
+                return targetFile.toString();
 
 
             }
         } catch (Exception e) {
             // Display error message.
-            System.out.println("Exception: " + e.getMessage());
+            Log.e("ZEISSS", "Exception: we failed?" + e.getMessage());
+
         }
+
+        return "";
     }
 
-    private static String getToken() {
+    public static String getToken() {
         HttpClient httpClient = new DefaultHttpClient();
 
         try {
@@ -128,7 +138,7 @@ public class Cognitive {
 
     }
 
-    private static String getImageToText(String image) {
+    public static String getImageToText(String image) {
         HttpClient httpClient = new DefaultHttpClient();
 
         try {
