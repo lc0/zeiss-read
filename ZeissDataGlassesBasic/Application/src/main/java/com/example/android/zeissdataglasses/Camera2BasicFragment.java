@@ -41,6 +41,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -893,6 +894,8 @@ public class Camera2BasicFragment extends Fragment
         switch (view.getId()) {
             case R.id.picture: {
                 takePicture();
+
+
                 break;
             }
             case R.id.texture: {
@@ -902,6 +905,9 @@ public class Camera2BasicFragment extends Fragment
 //                        .setPositiveButton(android.R.string.ok, null)
 //                        .show();
                 takePicture();
+
+                MediaPlayer mPlayer = MediaPlayer.create(getContext(), R.raw.actionable);
+                mPlayer.start();
 
                 break;
             }
@@ -913,6 +919,7 @@ public class Camera2BasicFragment extends Fragment
                             .setPositiveButton(android.R.string.ok, null)
                             .show();
                 }
+
                 break;
             }
         }

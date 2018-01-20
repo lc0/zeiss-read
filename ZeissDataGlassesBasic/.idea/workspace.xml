@@ -41,65 +41,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AutoFitTextureView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/zeissdataglasses/AutoFitTextureView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#2641#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#1018#1019#0" expanded="false" />
-                <element signature="e#1053#1054#0" expanded="false" />
-                <element signature="e#1123#1124#0" expanded="false" />
-                <element signature="e#1162#1163#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/settings.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Application/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Camera2BasicFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/zeissdataglasses/Camera2BasicFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="990" column="60" selection-start-line="990" selection-start-column="60" selection-end-line="990" selection-end-column="60" />
+            <state relative-caret-position="197">
+              <caret line="909" column="32" selection-start-line="909" selection-start-column="32" selection-end-line="909" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#17178#17216#0" expanded="true" />
-                <element signature="e#22844#22876#0" expanded="true" />
-                <element signature="e#35984#36006#0" expanded="true" />
-                <element signature="e#39570#39597#0" expanded="true" />
+                <element signature="e#17212#17250#0" expanded="true" />
+                <element signature="e#22878#22910#0" expanded="true" />
+                <element signature="e#36144#36166#0" expanded="true" />
+                <element signature="e#39731#39758#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CameraActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/zeissdataglasses/CameraActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -1935,7 +1888,7 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
+              <option name="myItemId" value="raw" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2003,6 +1956,12 @@
     <property name="android.project.structure.last.selected" value="Application" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="ScreenshotViewer.SavePath" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Application/src/main/res/raw" />
+      <recent name="$PROJECT_DIR$/Application/src/main/res" />
+    </key>
   </component>
   <component name="RunManager" selected="Android App.Application">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -2380,14 +2339,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#2641#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1018#1019#0" expanded="false" />
-            <element signature="e#1053#1054#0" expanded="false" />
-            <element signature="e#1123#1124#0" expanded="false" />
-            <element signature="e#1162#1163#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2413,10 +2365,10 @@
           <caret line="901" column="30" selection-start-line="901" selection-start-column="30" selection-end-line="901" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#17178#17216#0" expanded="true" />
-            <element signature="e#22844#22876#0" expanded="true" />
-            <element signature="e#35984#36006#0" expanded="true" />
-            <element signature="e#39570#39597#0" expanded="true" />
+            <element signature="e#17212#17250#0" expanded="true" />
+            <element signature="e#22878#22910#0" expanded="true" />
+            <element signature="e#36144#36166#0" expanded="true" />
+            <element signature="e#39731#39758#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2434,21 +2386,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/zeissdataglasses/AutoFitTextureView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#2641#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1018#1019#0" expanded="false" />
-            <element signature="e#1053#1054#0" expanded="false" />
-            <element signature="e#1123#1124#0" expanded="false" />
-            <element signature="e#1162#1163#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2496,6 +2433,27 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../screenshot-picture.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/raw/funnysong.mp3">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/zeissdataglasses/AutoFitTextureView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-281">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/zeissdataglasses/CameraActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -2504,21 +2462,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../screenshot-picture.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/raw/actionable.mp3">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/zeissdataglasses/Camera2BasicFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="990" column="60" selection-start-line="990" selection-start-column="60" selection-end-line="990" selection-end-column="60" />
+        <state relative-caret-position="197">
+          <caret line="909" column="32" selection-start-line="909" selection-start-column="32" selection-end-line="909" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#17178#17216#0" expanded="true" />
-            <element signature="e#22844#22876#0" expanded="true" />
-            <element signature="e#35984#36006#0" expanded="true" />
-            <element signature="e#39570#39597#0" expanded="true" />
+            <element signature="e#17212#17250#0" expanded="true" />
+            <element signature="e#22878#22910#0" expanded="true" />
+            <element signature="e#36144#36166#0" expanded="true" />
+            <element signature="e#39731#39758#0" expanded="true" />
           </folding>
         </state>
       </provider>
