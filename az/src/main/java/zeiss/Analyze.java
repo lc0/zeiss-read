@@ -14,10 +14,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
-public class App {
+public class Analyze {
     // **********************************************
     // *** Update or verify the following values. ***
     // **********************************************
@@ -36,7 +34,7 @@ public class App {
     //
     // Also, if you want to use the celebrities model, change "landmarks" to "celebrities" here and in
     // uriBuilder.setParameter to use the Celebrities model.
-    public static final String uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
+    public static final String uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze";
 
 
     public static void main(String[] args) {
@@ -47,9 +45,8 @@ public class App {
             //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
             //   URL below with "westus".
             URIBuilder uriBuilder = new URIBuilder(uriBase);
-
-            uriBuilder.setParameter("language", "unk");
-            uriBuilder.setParameter("detectOrientation ", "true");
+            uriBuilder.setParameter("visualFeatures", "Categories,Description,Color");
+            uriBuilder.setParameter("language", "en");
 
             // Request parameters.
             URI uri = uriBuilder.build();
@@ -59,7 +56,7 @@ public class App {
             request.setHeader("Content-Type", "application/octet-stream");
             request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
 
-            File file = new File("/home/raz/Desktop/arrivals.jpg");
+            File file = new File("/home/raz/Desktop/cat.jpg");
             // Request body.
             InputStreamEntity reqEntity = new InputStreamEntity(new FileInputStream(file), -1);
             request.setEntity(reqEntity);
@@ -73,34 +70,21 @@ public class App {
                 String jsonString = EntityUtils.toString(entity);
                 JSONObject json = new JSONObject(jsonString);
                 System.out.println("REST Response:\n");
-                System.out.println(json.toString(2));
-                System.out.println(getText(json));
-
-
-
+                JSONArray captions = json.getJSONObject("description").getJSONArray("captions");
+                String result = "";
+                for (Object caption : captions) {
+                    if (caption != null){
+                        JSONObject jsonCaption = (JSONObject) caption;
+                        if (jsonCaption.getDouble("confidence") > 0.50d) {
+                            result += ((JSONObject) caption).getString("text");
+                        }
+                    }
+                }
+                System.out.println(result);
             }
         } catch (Exception e) {
             // Display error message.
-            System.out.println("Exception: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
-    }
-
-    private static String getText(JSONObject json) {
-        List result = new ArrayList();
-        JSONArray regions = json.getJSONArray("regions");
-        for (Object region : regions) {
-            if (region != null) {
-                JSONArray lines = ((JSONObject) region).getJSONArray("lines");
-                for (Object line : lines) {
-                    JSONArray words = ((JSONObject) line).getJSONArray("words");
-                    for (Object word : words) {
-                        String text = ((JSONObject) word).getString("text");
-                        result.add(text);
-                    }
-                }
-
-            }
-        }
-        return String.join(" ", result);
     }
 }
