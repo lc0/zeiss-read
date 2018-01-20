@@ -180,13 +180,14 @@ public class App {
     private static String getText(JSONObject json) {
         List result = new ArrayList();
         JSONArray regions = json.getJSONArray("regions");
-        for (Object region : regions) {
+        for (int r=0; r<regions.length(); r++) {
+            JSONObject region = (JSONObject) regions.get(r);
             if (region != null) {
-                JSONArray lines = ((JSONObject) region).getJSONArray("lines");
-                for (Object line : lines) {
-                    JSONArray words = ((JSONObject) line).getJSONArray("words");
-                    for (Object word : words) {
-                        String text = ((JSONObject) word).getString("text");
+                JSONArray lines = region.getJSONArray("lines");
+                for (int l=0; l<lines.length(); l++) {
+                    JSONArray words = ((JSONObject) lines.get(l)).getJSONArray("words");
+                    for (int w=0; w<words.length(); w++) {
+                        String text = ((JSONObject) words.get(w)).getString("text");
                         result.add(text);
                     }
                 }
