@@ -23,6 +23,10 @@ dependencies {
     compile "com.android.support:support-v13:26.1.0"
     compile "com.android.support:cardview-v7:26.1.0"
     compile "com.android.support:appcompat-v7:26.1.0"
+
+    compile 'org.json:json:20171018'
+
+
 }
 
 // The sample build uses multiple directories to
@@ -60,5 +64,7 @@ android {
         androidTest.java.srcDirs = ['tests/src']
 
     }
+
+    useLibrary 'org.apache.http.legacy'
 
 }
