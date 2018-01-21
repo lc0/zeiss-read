@@ -20,8 +20,8 @@ public class Analyze {
     // *** Update or verify the following values. ***
     // **********************************************
 
-    // Replace the subscriptionKey string value with your valid subscription key.
-    public static final String subscriptionKey = "86ba3aa631c8430e8b465c9fc5bdf015";
+    // Replace the analysysSubscriptionKey string value with your valid subscription key.
+    public static final String analysysSubscriptionKey = "86ba3aa631c8430e8b465c9fc5bdf015";
 
     // Replace or verify the region.
     //
@@ -34,17 +34,21 @@ public class Analyze {
     //
     // Also, if you want to use the celebrities model, change "landmarks" to "celebrities" here and in
     // uriBuilder.setParameter to use the Celebrities model.
-    public static final String uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze";
+    public static final String analysysUriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze";
 
 
     public static void main(String[] args) {
+        getAnalysys();
+    }
+
+    public static String getAnalysys() {
         HttpClient httpClient = new DefaultHttpClient();
 
         try {
             // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
             //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
             //   URL below with "westus".
-            URIBuilder uriBuilder = new URIBuilder(uriBase);
+            URIBuilder uriBuilder = new URIBuilder(analysysUriBase);
             uriBuilder.setParameter("visualFeatures", "Categories,Description,Color");
             uriBuilder.setParameter("language", "en");
 
@@ -54,7 +58,7 @@ public class Analyze {
 
             // Request headers.
             request.setHeader("Content-Type", "application/octet-stream");
-            request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+            request.setHeader("Ocp-Apim-Subscription-Key", analysysSubscriptionKey);
 
             File file = new File("/home/raz/Desktop/cat.jpg");
             // Request body.
@@ -81,10 +85,12 @@ public class Analyze {
                     }
                 }
                 System.out.println(result);
+                return result;
             }
         } catch (Exception e) {
             // Display error message.
             System.out.println(e.getMessage());
         }
+        return "";
     }
 }

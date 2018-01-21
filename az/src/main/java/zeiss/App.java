@@ -22,8 +22,12 @@ public class App {
     // *** Update or verify the following values. ***
     // **********************************************
 
-    // Replace the subscriptionKey string value with your valid subscription key.
+    // Replace the analysysSubscriptionKey string value with your valid subscription key.
     public static final String subscriptionKey = "86ba3aa631c8430e8b465c9fc5bdf015";
+
+    public static final String analysysSubscriptionKey = "86ba3aa631c8430e8b465c9fc5bdf015";
+    public static final String analysysUriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze";
+
 
     // Replace or verify the region.
     //
@@ -131,6 +135,7 @@ public class App {
 
     private static String getImageToText(String image) {
         HttpClient httpClient = new DefaultHttpClient();
+        String text = "";
 
         try {
             // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
@@ -163,16 +168,69 @@ public class App {
                 String jsonString = EntityUtils.toString(entity);
                 JSONObject json = new JSONObject(jsonString);
                 System.out.println("REST Response:\n");
-                String text = getText(json);
+                text = getText(json);
                 System.out.println("Text found: " + text);
-
-                return text;
-
-
             }
         } catch (Exception e) {
             // Display error message.
             System.out.println("Exception: " + e.getMessage());
+        }
+
+        if (text.isEmpty()){
+            text = getAnalysys(image);
+        }
+        return text;
+    }
+
+    private static String getAnalysys(String image) {
+        HttpClient httpClient = new DefaultHttpClient();
+
+        try {
+            // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
+            //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
+            //   URL below with "westus".
+            URIBuilder uriBuilder = new URIBuilder(analysysUriBase);
+            uriBuilder.setParameter("visualFeatures", "Categories,Description,Color");
+            uriBuilder.setParameter("language", "en");
+
+            // Request parameters.
+            URI uri = uriBuilder.build();
+            HttpPost request = new HttpPost(uri);
+
+            // Request headers.
+            request.setHeader("Content-Type", "application/octet-stream");
+            request.setHeader("Ocp-Apim-Subscription-Key", analysysSubscriptionKey);
+
+            File file = new File(image);
+            // Request body.
+            InputStreamEntity reqEntity = new InputStreamEntity(new FileInputStream(file), -1);
+            request.setEntity(reqEntity);
+
+            // Execute the REST API call and get the response entity.
+            HttpResponse response = httpClient.execute(request);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                // Format and display the JSON response.
+                String jsonString = EntityUtils.toString(entity);
+                JSONObject json = new JSONObject(jsonString);
+                System.out.println("REST Response:\n");
+                JSONArray captions = json.getJSONObject("description").getJSONArray("captions");
+                String result = "";
+                for (Object caption : captions) {
+                    if (caption != null){
+                        JSONObject jsonCaption = (JSONObject) caption;
+                        if (jsonCaption.getDouble("confidence") > 0.50d) {
+                            result += ((JSONObject) caption).getString("text");
+                        }
+                    }
+                }
+                System.out.println(result);
+                return result;
+            }
+        } catch (Exception e) {
+            // Display error message.
+            System.out.println(e.getMessage());
         }
         return "";
     }
