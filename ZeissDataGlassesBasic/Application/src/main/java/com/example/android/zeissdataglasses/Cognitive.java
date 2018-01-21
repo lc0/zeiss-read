@@ -53,6 +53,59 @@ public class Cognitive {
     public static final String textToSpeechSubscriptionKey = "4ef4fd02de554dbb92fe94c28fe38c46";
     public static final String speechURL = "https://speech.platform.bing.com/synthesize";
 
+    public static final String analysysSubscriptionKey = "86ba3aa631c8430e8b465c9fc5bdf015";
+    public static final String analysysUriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze";
+
+
+    private static String getAnalysys(String image) {
+        HttpClient httpClient = new DefaultHttpClient();
+
+        try {
+            URI uri = new URI(analysysUriBase + "?visualFeatures=Categories,Description,Color&language=en");
+
+            HttpPost request = new HttpPost(uri);
+
+            // Request headers.
+            request.setHeader("Content-Type", "application/octet-stream");
+            request.setHeader("Ocp-Apim-Subscription-Key", analysysSubscriptionKey);
+
+            File file = new File(image);
+            // Request body.
+            InputStreamEntity reqEntity = new InputStreamEntity(new FileInputStream(file), -1);
+            request.setEntity(reqEntity);
+
+            // Execute the REST API call and get the response entity.
+            HttpResponse response = httpClient.execute(request);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                // Format and display the JSON response.
+                String jsonString = EntityUtils.toString(entity);
+                JSONObject json = new JSONObject(jsonString);
+                JSONArray captions = json.getJSONObject("description").getJSONArray("captions");
+                System.out.println("REST Response:\n" + captions.toString());
+
+                String result = "";
+                for (int i = 0; i<captions.length(); i++) {
+                    JSONObject caption = (JSONObject) captions.get(i);
+
+                    if (caption != null){
+                        JSONObject jsonCaption = (JSONObject) caption;
+//                        if (jsonCaption.getDouble("confidence") > 0.50d) {
+                            result += ((JSONObject) caption).getString("text");
+//                        }
+                    }
+                }
+                System.out.println(result);
+                return result;
+            }
+        } catch (Exception e) {
+            // Display error message.
+            System.out.println(e.getMessage());
+        }
+        return "";
+    }
+
 
     public static String getSpeech(String text, String token, Context context) {
         HttpClient httpClient = new DefaultHttpClient();
@@ -141,6 +194,8 @@ public class Cognitive {
     public static String getImageToText(String image) {
         HttpClient httpClient = new DefaultHttpClient();
 
+        String text = "";
+
         try {
             // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
             //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
@@ -167,10 +222,7 @@ public class Cognitive {
                 String jsonString = EntityUtils.toString(entity);
                 JSONObject json = new JSONObject(jsonString);
                 System.out.println("REST Response:\n");
-                String text = getText(json);
-                System.out.println("Text found: " + text);
-
-                return text;
+                text = getText(json);
 
 
             }
@@ -178,7 +230,13 @@ public class Cognitive {
             // Display error message.
             System.out.println("Exception: " + e.getMessage());
         }
-        return "";
+
+        if (text.isEmpty()){
+            text = getAnalysys(image);
+        }
+
+        Log.i("ZEISSSS", "Text found: " + text);
+        return text;
     }
 
     private static String getText(JSONObject json) throws JSONException {
